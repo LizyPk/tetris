@@ -5,14 +5,13 @@ let type
 let song
 let catMeow
 let sadCat
-let bg
 let pointsArea
 let gameOverSound
-let anykey
+var anykey = 0
+
 
 function preload()
 {
-    bg = loadImage('assets/fundo.png') 
     pointsArea = loadImage('assets/pointsArea.png')
     sadCat = loadImage('assets/sadCat.png')
     song = loadSound('assets/Tetris.mp3')
@@ -24,19 +23,19 @@ function preload()
 function setup()
 {
   anyKey = 0
-  createCanvas(tamC*numC+230,tamL*numL+20);
+  createCanvas(windowWidth,windowHeight);  
+//createCanvas(tamC*numC+230,tamL*numL+20);
 tetrimino = new Tetrimino()
   //rect(tamC*numC,tamL*numL)
-
 }
 
 //DRAW
 function draw()
 {
+        DrawBackground()
     if(anyKey == 0)
     {
-      background(bg)
-      image(pointsArea, tamC*numC*0.35, tamL*numL*0.28, pointsArea.width*0.75, pointsArea.height*0.75)
+      image(pointsArea, windowWidth/2-width/4, windowHeight*0.28, pointsArea.width*0.75, pointsArea.height*0.75)
       DrawText()
       
      if(keyIsDown(ENTER))
@@ -44,17 +43,17 @@ function draw()
       anyKey = 1
       }
     }
-  
+  //PAUSE
       else if(anyKey == 2)
     {
       DrawText(points)
       song.setVolume(0.03)
     }
-  
-        else if(anyKey == 3)
+  //GAME OVER
+      else if(anyKey == 3)
     {
-      background(bg)
-      image(sadCat, tamC*numC*0.35, tamL*numL*0.28, sadCat.width*0.75, sadCat.height*0.75)
+      cleanGrid()   
+      image(sadCat, windowWidth/2-sadCat.width/2.25, tamL*numL*0.28, sadCat.width*0.75, sadCat.height*0.75)
       DrawText(points)
       song.stop()
       gameOverSound.setVolume(0.1)
@@ -62,7 +61,6 @@ function draw()
       if (!gameOverSound.isPlaying())
       {
         gameOverSound.play()
-        cleanGrid()   
       }
       if(keyIsDown(ENTER))
       {
@@ -76,7 +74,6 @@ function draw()
         
     else if(anyKey == 4)
     {
-      background(bg)
       song.setVolume(0.03)
       DrawText()
       if(keyIsDown(27))
@@ -87,9 +84,7 @@ function draw()
   
     else if(anyKey == 1)
     {
-      background(230, 212, 117)
       drawGrid()
-  
       song.setVolume(0.1)
    if (!song.isPlaying())
       {
